@@ -1,51 +1,27 @@
-"""Generate sales report showing total melons each salesperson sold."""
+def generate_sales_report(file_name):
+    """Generate sales report showing total melons each salesperson sold.
+    
+    Return in a string the salesperson's name and how many watermelons they sold.
 
-#general comments: 
-    # define a function for one to continue adding sale reports
-    # be more descriptive of the data type contained in each variable
-    # vary the variable names for easier distinction
-    # use more docstrings to describe the process 
+    The output should look like this:
 
-salespeople = []
-# creates an empty list to store names of sales people
-melons_sold = []
-# creates a list to store number of melons sold in each transaction
-# suggestion: create an dictionary to contain names as keys
-            # the name key has a value of a dictionary, where the keys are 
-            # total amount and number of melons sold
+        Ann Smith sold 13 melons
+        Linda Reynolds sold 169 melons
+        Doris Miller sold 17 melons
+    
+    """
+    sales_dict = {}
 
-f = open('sales-report.txt')
-# opens the sales-report text file
-for line in f:
-    #creates a for loop to iterate over every line in the text file
-    line = line.rstrip()
-    # this strips every line of the whitespace to the right of the last character
-    entries = line.split('|')
-    # this removes pipelines and splits all characeters into separate items, divided by
-        # where the pipelines were before
-    #suggestion: combine rstrip() and rsplit('|') in the same line: entries_list = line.rstrip().split('|')
+    sales_file = open(file_name)
 
-    salesperson = entries[0]
-    # assigns the first item to be a salesperson's name
-    melons = int(entries[2])
-    # assigns the third item to be the number of melons sold
-    # list unpacking of entries list
+    for line in sales_file:
+        entries_list = line.rstrip().split('|')
+        client_name, total_cost, num_melons = entries_list
+        sales_dict.update({client_name: {"total cost": total_cost, "number of melons sold": num_melons}})
 
-    if salesperson in salespeople:
-        # if a salesperson's name is found in the salespeople list
-        position = salespeople.index(salesperson)
-        # position is equal to the index at the name of the salesperson in the salespeople list
-        melons_sold[position] += melons
-        # the index number represented by position variable is += to the number of melons sold
-    else:
-        # if a salesperson's name is not found in the salespeople list
-        salespeople.append(salesperson)
-        # the name of the salesperson is added to the list of names
-        melons_sold.append(melons)
-        # the number of melons sold by that person is added to the list of melonds sold
+    for name, attributes in sales_dict.items():
+        print(f'{name} sold {attributes["number of melons sold"]} melons')
 
 
-for i in range(len(salespeople)):
-    # looping through the indices of the salespeople (names) list
-    print(f'{salespeople[i]} sold {melons_sold[i]} melons')
-    # prints that the name of the salesperson at n index sol the number at n index melons
+generate_sales_report("sales-report.txt")
+
